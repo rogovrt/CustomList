@@ -1,16 +1,14 @@
-public class MyCustomList implements CustomList{
+public class MyCustomList implements CustomList {
     private static int defaultCapasity = 10;
     private Object[] data;
     private int size;
 
     public MyCustomList(int initialCapasity) {
         data = new Object[initialCapasity];
-        size = 0;
     }
 
     public MyCustomList() {
         data = new Object[defaultCapasity];
-        size = 0;
     }
 
     public int size() {
@@ -28,8 +26,8 @@ public class MyCustomList implements CustomList{
         return i != data.length;
     }
 
-    private boolean checkCapacity(int neсessarySize) {
-        if (neсessarySize > data.length) {
+    private boolean checkCapacity(int necessarySize) {
+        if (necessarySize > data.length) {
             Object[] newData = new Object[data.length * 2];
             System.arraycopy(data, 0, newData, 0, data.length);
             data = newData;
@@ -45,14 +43,13 @@ public class MyCustomList implements CustomList{
 
     public boolean remove(Object element) {
         int i = 0;
-        while ((i < size) && (element.equals(data[i]) == false))
+        while ((i < size) && (!element.equals(data[i])))
             i++;
         if (i != size) {
             System.arraycopy(data, i + 1, data, i, size - i - 1);
             data[--size] = null;
             return true;
-        }
-        else
+        } else
             return false;
     }
 
@@ -62,40 +59,38 @@ public class MyCustomList implements CustomList{
         if (size != anotherMyCustomList.size)
             return false;
         if (anotherMyCustomList == this)
-            return false;
-        int i = 0;
-        while ((i < size) && (data[i] == anotherMyCustomList.data[i]))
-            i++;
-        if (i == size)
             return true;
-        else
-            return false;
+        int i = 0;
+        while ((i < size) && (data[i].equals(anotherMyCustomList.data[i])))
+            i++;
+        return i == size;
     }
 
     public boolean containsSublist(MyCustomList anotherMyCustomList) {
         if (size == anotherMyCustomList.size)
-            containsAll(anotherMyCustomList);
+            return containsAll(anotherMyCustomList);
         if (anotherMyCustomList == null)
             return false;
         if (size < anotherMyCustomList.size)
             return false;
-        for (int i = 0; i < size - anotherMyCustomList.size; i++) {
+        for (int i = 0; i < size - anotherMyCustomList.size + 1; i++) {
             Object[] check = new Object[anotherMyCustomList.size];
             System.arraycopy(data, i, check, 0, anotherMyCustomList.size);
-            if (anotherMyCustomList.data.equals(check) == true)
+            int j = 0;
+            while ((j < anotherMyCustomList.size) && (check[j].equals(anotherMyCustomList.data[j])))
+                j++;
+            if (j == anotherMyCustomList.size)
                 return true;
         }
         return false;
     }
 
     private boolean checkIndex(int index) {
-        if ((index < 0) || (index >= size - 1))
-            return false;
-        return true;
+        return (index >= 0) && (index < size - 1);
     }
 
     public Object get(int index) {
-        if (checkIndex(index) == false)
+        if (!checkIndex(index))
             return null;
         else
             return data[index];
