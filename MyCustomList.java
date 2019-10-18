@@ -85,12 +85,8 @@ public class MyCustomList implements CustomList {
         return false;
     }
 
-    private boolean checkIndex(int index) {
-        return (index >= 0) && (index < size - 1);
-    }
-
     public Object get(int index) {
-        if (!checkIndex(index))
+        if ((index < 0) && (index >= size))
             return null;
         else
             return data[index];
